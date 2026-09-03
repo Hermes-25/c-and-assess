@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- Question images use authenticated object-storage URLs that cannot be optimized at build time. */
 'use client';
 
 import { FormEvent,useState } from 'react';

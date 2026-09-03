@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element -- The club logo is served directly so this edge deployment does not require an image-optimization service. */
 import { getSession } from '../lib/auth';
 const skills = ['Quantitative aptitude', 'Logical reasoning', 'Data interpretation'];
 

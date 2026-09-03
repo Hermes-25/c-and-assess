@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- Question images use authenticated object-storage URLs that cannot be optimized at build time. */
 'use client';
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { useCallback,useEffect,useMemo,useRef,useState } from 'react';
