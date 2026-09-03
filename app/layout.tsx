@@ -5,6 +5,7 @@ import './globals.css';
 const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://assess.caciitg.com'),
   title: 'C&Assess | Assessment Platform',
   description: 'Online assessments, mock tests and performance analysis for C&A initiatives by Consulting & Analytics Club, IIT Guwahati.',
   openGraph: {
@@ -22,3 +23,4 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body className={montserrat.variable}>{children}</body></html>;
 }
+

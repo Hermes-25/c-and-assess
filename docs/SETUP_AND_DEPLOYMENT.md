@@ -75,7 +75,7 @@ The real hosting file is ignored because it identifies an account-specific proje
 
 ## 7. Club-owned Cloudflare Worker deployment
 
-This is the prepared ownership model for a future cutover.
+This is the locked target architecture. Follow [Club Cloudflare cutover](DEPLOYMENT_CUTOVER.md) for the staged migration and rollback sequence.
 
 1. Create a D1 database.
 2. Create an R2 bucket when the club accepts the billing/account requirement.
@@ -93,7 +93,7 @@ Do not publish wrangler.production.jsonc if it contains account-specific identif
 
 For the C&A deployment:
 
-- caciitg.com remains the existing GitHub Pages website;
+- caciitg.com remains the existing Cloudflare Pages project sourced from `caciitg/devops`;
 - assess.caciitg.com points to the assessment application;
 - the main site uses a normal link to the assessment subdomain.
 
@@ -121,3 +121,4 @@ This is simpler and safer than mounting a full server application below a GitHub
 - Use HTTPS only in production.
 - Set edge rate limits before opening a broad public registration.
 - Freeze code, DNS, OAuth and schema changes before test day.
+

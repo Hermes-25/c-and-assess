@@ -223,7 +223,6 @@ export async function listAssessments(limit = 50) {
 }
 
 export function publicAssessment(row: Record<string, unknown>) {
-  const assessment = { ...row };
-  delete assessment.settings_json;
+  const { settings_json: _settingsJson, ...assessment } = row;
   return assessment;
 }

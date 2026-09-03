@@ -111,7 +111,8 @@ export default async function Home() {
       </section>
 
       <section className="landing-final-cta"><div><p className="landing-section-label">C&amp;A Assessment Platform</p><h2>Attempt with clarity. Learn exactly what to change.</h2><p>See live registrations, assessment windows and released reports on your candidate desk.</p></div><a className="landing-primary-action" href={assessmentHref}><span>{session?'Open my assessments':'Continue with Google'}</span><span>→</span></a></section>
-      <footer><p>Consulting &amp; Analytics Club · IIT Guwahati</p><p>Built by Abhishek Das · Maintained by the C&amp;A Team</p></footer>
+      <footer><p>Consulting &amp; Analytics Club · IIT Guwahati</p><nav aria-label="Legal navigation"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav><p>Built by Abhishek Das · Maintained by the C&amp;A Team</p></footer>
     </main>
   );
 }
+

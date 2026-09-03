@@ -54,13 +54,13 @@ The public domain is assess.caciitg.com. Cloudflare handles DNS. The current rel
 - object storage exposed as FILES;
 - Google OAuth credentials stored as deployment secrets.
 
-The existing caciitg.com website remains an independent GitHub Pages site and links to the assessment subdomain. Sharing a DNS zone does not merge their deployments.
+The existing caciitg.com website remains an independent Cloudflare Pages project sourced from `caciitg/devops` and links to the assessment subdomain. Sharing a DNS zone does not merge their deployments.
 
 ## Prepared future shape
 
-The portable source also supports a club-owned Cloudflare Worker with a club D1 database and R2 bucket. That cutover is a change of infrastructure ownership, not a product rewrite. Binding names stay DB and FILES.
+The locked target is a club-owned Cloudflare Worker deployed from `Hermes-25/c-and-assess` by GitHub Actions, with a club D1 database and private R2 bucket. That cutover is a change of infrastructure ownership, not a product rewrite. Binding names stay DB and FILES.
 
-The move is deliberately gated by billing ownership, data migration, backup, monitoring and final-infrastructure load tests.
+The move is deliberately gated by R2 activation, a narrowly scoped deploy token, data migration, backup, monitoring and final-infrastructure load tests. The exact sequence is in [Club Cloudflare cutover](DEPLOYMENT_CUTOVER.md).
 
 ## Application layers
 
@@ -131,3 +131,4 @@ The in-process rate limiter is only a backstop. A large public event still needs
 D1 is intentionally the first database because the workload is small-row SQL and the project values low operational cost. The design reduces hot writes through checkpoint batching and post-test analytics jobs.
 
 The included 4,000-candidate rehearsal validates application logic and request shape on a local Worker+D1 emulator. It does not prove internet latency, regional behaviour or final-account quotas. Run staged tests at 200, 500, 1,000 and 4,000 candidates on the final infrastructure before claiming that capacity.
+

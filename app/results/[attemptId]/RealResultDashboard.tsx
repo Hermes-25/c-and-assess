@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element, react-hooks/set-state-in-effect -- Question images use authenticated object-storage URLs that cannot be optimized at build time. */
+/* eslint-disable @next/next/no-html-link-for-pages, react-hooks/set-state-in-effect */
 import { useEffect, useMemo, useState } from 'react';
 import { usePendingNavigationGuard } from '../../_components/usePendingNavigationGuard';
 

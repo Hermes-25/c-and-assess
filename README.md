@@ -60,7 +60,7 @@ All screenshots use the public demo experience. No candidate database record is 
 ```mermaid
 flowchart TB
     U[Candidate or organizer]:::person --> CF[Cloudflare DNS and edge]:::edge
-    CF -->|caciitg.com| GH[Existing C&A website<br/>GitHub Pages]:::site
+    CF -->|caciitg.com| GH[Existing C&A website<br/>Cloudflare Pages from caciitg/devops]:::site
     CF -->|assess.caciitg.com| APP[C&Assess edge application]:::app
 
     APP --> VX[Vinext adapter]:::framework
@@ -82,7 +82,7 @@ flowchart TB
     classDef process fill:#f7e9f3,stroke:#b53f8c,color:#321027;
 ```
 
-The current public release uses an OpenAI Sites-managed Cloudflare runtime, D1 binding and object-storage binding. A club-owned Worker + D1 + R2 cutover is documented but deliberately deferred until billing, monitoring, backup and final-infrastructure load gates are ready. See [Architecture](docs/ARCHITECTURE.md) and [Deployment](docs/SETUP_AND_DEPLOYMENT.md).
+The current public release uses an OpenAI Sites-managed Cloudflare runtime, D1 binding and object-storage binding. The locked target is a club-owned Worker deployed from this repository by GitHub Actions, backed by club D1 and private R2. The live cutover remains gated by R2 activation, secrets, backup, monitoring and final-infrastructure rehearsal. See [Architecture](docs/ARCHITECTURE.md), [Deployment](docs/SETUP_AND_DEPLOYMENT.md) and the [cutover runbook](docs/DEPLOYMENT_CUTOVER.md).
 
 ## What I engineered
 
@@ -168,6 +168,7 @@ For the database, OAuth, migrations, storage binding and deployment steps, follo
 | Use the candidate or organizer product | [Product guide](docs/PRODUCT_GUIDE.md) |
 | Prepare CSV files and map images correctly | [CSV import guide](docs/CSV_IMPORT_GUIDE.md) |
 | Run locally or deploy a new instance | [Setup and deployment](docs/SETUP_AND_DEPLOYMENT.md) |
+| Move production to the club Cloudflare account | [Club Cloudflare cutover](docs/DEPLOYMENT_CUTOVER.md) |
 | Operate an assessment safely | [Operations runbook](docs/OPERATIONS_RUNBOOK.md) |
 | See every known limitation and its reason | [Limitations and roadmap](docs/LIMITATIONS_AND_ROADMAP.md) |
 | Understand the role of AI in the build | [AI-assisted development](docs/AI_ASSISTED_DEVELOPMENT.md) |
@@ -185,3 +186,4 @@ The application code is available under the [MIT Licence](LICENSE). The C&A name
 Built by **Abhishek Das** for the **Consulting & Analytics Club, IIT Guwahati**.
 
 [LinkedIn](https://www.linkedin.com/in/abhishek-das-iitg/) · [Portfolio](https://das-abhishek.vercel.app/) · [Email](mailto:work.abhishekdas@gmail.com)
+
