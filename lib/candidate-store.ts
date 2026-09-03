@@ -37,6 +37,17 @@ export async function ensureCandidateSchema(){
 export function jsonArray(value:unknown){try{const result=JSON.parse(String(value||'[]'));return Array.isArray(result)?result.map(String):[];}catch{return [];}}
 export function jsonAnswers(value:unknown){try{const result=JSON.parse(String(value||'{}')) as Record<string,unknown>;return Object.fromEntries(Object.entries(result).map(([key,item])=>[key,Array.isArray(item)?item.map(String).slice(0,20):[]]));}catch{return {};}}
 export function jsonNumberMap(value:unknown){try{const result=JSON.parse(String(value||'{}')) as Record<string,unknown>;return Object.fromEntries(Object.entries(result).map(([key,item])=>[key,Math.max(0,Math.floor(Number(item)||0))]));}catch{return {};}}
-export function shuffle<T>(values:T[]){const result=[...values];for(let i=result.length-1;i>0;i-=1){const bytes=crypto.getRandomValues(new Uint32Array(1));const j=bytes[0]%(i+1);[result[i],result[j]]=[result[j],result[i]];}return result;}
+function unbiasedRandomIndex(upperExclusive:number){
+  const sampleSpace=0x1_0000_0000;
+  const rejectionLimit=Math.floor(sampleSpace/upperExclusive)*upperExclusive;
+  const bytes=new Uint32Array(1);
+  let value:number;
+  do{
+    crypto.getRandomValues(bytes);
+    value=bytes[0];
+  }while(value>=rejectionLimit);
+  return value%upperExclusive;
+}
+export function shuffle<T>(values:T[]){const result=[...values];for(let i=result.length-1;i>0;i-=1){const j=unbiasedRandomIndex(i+1);[result[i],result[j]]=[result[j],result[i]];}return result;}
 export function deterministicShuffle<T>(values:T[],seed:string){let state=2166136261;for(const char of seed)state=Math.imul(state^char.charCodeAt(0),16777619)>>>0;const next=()=>{state+=0x6D2B79F5;let t=state;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};const result=[...values];for(let i=result.length-1;i>0;i-=1){const j=Math.floor(next()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
 export const safeCandidateAssessment=(row:Record<string,unknown>)=>({id:row.id,slug:row.slug,title:row.title,description:row.description,status:row.status,durationSeconds:row.duration_seconds,registrationStartsAt:row.registration_starts_at,registrationEndsAt:row.registration_ends_at,startsAt:row.starts_at,endsAt:row.ends_at,questionCount:row.question_count,totalMarks:row.total_marks,settings:parseSettings(String(row.settings_json||'{}')),registrationStatus:row.registration_status||null,attemptId:row.attempt_id||null,attemptStatus:row.attempt_status||null});
