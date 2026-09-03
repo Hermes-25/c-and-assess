@@ -13,7 +13,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "test:scoring": "node scripts/verify_scoring.mjs",
+    "test:scoring": "node --experimental-strip-types scripts/verify_scoring.mjs",
     "test:schema": "python scripts/verify_schema.py",
     "test:load": "node --experimental-strip-types scripts/load_test_results.ts",
     "test:load:http": "node scripts/load_test_http.mjs",
