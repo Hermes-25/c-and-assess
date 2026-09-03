@@ -1,0 +1,18 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+  categories:
+    - title: Candidate experience
+      labels:
+        - candidate
+    - title: Organizer experience
+      labels:
+        - organizer
+    - title: Reliability and security
+      labels:
+        - reliability
+        - security
+    - title: Other changes
+      labels:
+        - "*"

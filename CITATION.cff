@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you reference C&Assess, please cite the software repository."
+title: "C&Assess"
+type: software
+authors:
+  - family-names: "Das"
+    given-names: "Abhishek"
+repository-code: "https://github.com/Hermes-25/c-and-assess"
+url: "https://assess.caciitg.com"
+version: 1.0.0
+date-released: 2026-09-03
+license: MIT

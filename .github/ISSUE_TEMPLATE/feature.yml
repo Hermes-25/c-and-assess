@@ -1,0 +1,34 @@
+name: Product proposal
+description: Propose a candidate, organizer, engineering or operations improvement.
+title: "[Proposal]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Who is struggling, and what are they trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe success without prescribing an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and risks
+      description: Consider fairness, privacy, cost, accessibility, test-day reliability and migration.
+  - type: textarea
+    id: approach
+    attributes:
+      label: Possible approach
+  - type: checkboxes
+    id: critical
+    attributes:
+      label: Critical-path check
+      options:
+        - label: This proposal does not make scoring, saving or authentication depend on an LLM.

@@ -1,0 +1,3 @@
+Question,Type,Answer,Choice1,Choice2,Choice3,Choice4,Choice5,Choice6,Marks,Negative Marks,Answer Keywords,Answer Keywords marks,Image,Duration In Seconds,Tag,Solution,Difficulty,Section,Topic,Subtopic,Source,Accepted Variants,TITA Tolerance
+This controlled verification question includes a reference image. Which option confirms that it rendered?,MCQ,Image rendered,Image rendered,Image missing,,,,,3,1,,,q001.jpg,60,Deployment QA,The uploaded reference image should appear above the options.,easy,Verification,Media delivery,Image rendering,C&Assess deployment test,,
+What is 20% of 150?,MCQ,30,20,25,30,35,,,3,1,,,,60,Deployment QA,20% of 150 equals 30.,easy,Verification,Quantitative aptitude,Percentages,C&Assess deployment test,,
