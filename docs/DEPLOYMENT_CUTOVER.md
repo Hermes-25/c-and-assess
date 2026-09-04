@@ -13,17 +13,19 @@ Hermes-25/c-and-assess --GitHub Actions--> Club Cloudflare Worker
                                                                |
                                                         assess.caciitg.com
                                                            /   |   \
-                                                          D1  R2  Google OAuth
+                                                          D1  R2* Google OAuth
 ~~~
 
 The repositories deploy independently. The main site contains only a normal HTTPS link to C&Assess. No iframe, reverse proxy or shared build is required.
+
+R2 is optional and deferred by the owner. With no bucket configured, the club Worker is text-only. The existing Sites-managed deployment is not changed by this staging setup. See [Free-tier operation](FREE_TIER.md) before any public cutover.
 
 ## One-time Cloudflare and GitHub setup
 
 1. Keep the existing `caciitg` Pages project connected to `caciitg/devops` on `main`.
 2. Upgrade that Pages project from Build Image v1 to v3 before Cloudflare removes v1.
 3. Use the existing D1 database `caciitg-assess-production` or create a replacement before the first real event.
-4. Activate R2 and create the private bucket `caciitg-assess-files`. The bucket must not have a public URL.
+4. Leave R2 inactive for now. Do not supply `CLOUDFLARE_R2_BUCKET`. Only after separate billing approval, create private buckets and add that setting to enable images.
 5. Create a narrowly scoped Cloudflare API token for GitHub Actions. It needs Worker Scripts edit, D1 edit, Workers Routes edit and account read for this account. Do not use the Global API Key.
 6. Create GitHub environments named `staging` and `production` in `Hermes-25/c-and-assess`. Require a reviewer for `production`.
 7. Add the settings below to both environments. Prefer separate staging resources.
@@ -34,7 +36,7 @@ The repositories deploy independently. The main site contains only a normal HTTP
 | `CLOUDFLARE_ACCOUNT_ID` | Environment variable | Club Cloudflare account ID |
 | `CLOUDFLARE_D1_DATABASE_ID` | Environment variable | Target D1 database UUID |
 | `CLOUDFLARE_D1_DATABASE_NAME` | Environment variable | `caciitg-assess-production` |
-| `CLOUDFLARE_R2_BUCKET` | Environment variable | `caciitg-assess-files` |
+| `CLOUDFLARE_R2_BUCKET` | Optional environment variable | Leave unset for text-only mode; later use a private bucket |
 | `CLOUDFLARE_CUSTOM_DOMAIN` | Production variable | `assess.caciitg.com` |
 
 Google credentials and `AUTH_SECRET` are Worker runtime secrets. Add `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `AUTH_SECRET` directly to the Worker; do not pass them through the deploy workflow.
@@ -68,7 +70,7 @@ Google credentials and `AUTH_SECRET` are Worker runtime secrets. Add `GOOGLE_CLI
 
 ## Hard gates
 
-- [ ] R2 is active and the private bucket exists.
+- [ ] Storage mode is tested: text-only with no image references, or separately approved private R2 with all required images migrated.
 - [ ] Worker runtime secrets are set without exposing them in GitHub or logs.
 - [ ] D1 migrations complete outside candidate requests.
 - [ ] Staging passes the full lifecycle rehearsal.
@@ -77,4 +79,3 @@ Google credentials and `AUTH_SECRET` are Worker runtime secrets. Add `GOOGLE_CLI
 - [ ] Cutover and rollback are rehearsed.
 - [ ] The main-site pull request links to `https://assess.caciitg.com`.
 - [ ] An exam-day monitoring owner and backup owner are named.
-

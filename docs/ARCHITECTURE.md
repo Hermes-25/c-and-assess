@@ -60,7 +60,7 @@ The existing caciitg.com website remains an independent Cloudflare Pages project
 
 The locked target is a club-owned Cloudflare Worker deployed from `Hermes-25/c-and-assess` by GitHub Actions, with a club D1 database and private R2 bucket. That cutover is a change of infrastructure ownership, not a product rewrite. Binding names stay DB and FILES.
 
-The move is deliberately gated by R2 activation, a narrowly scoped deploy token, data migration, backup, monitoring and final-infrastructure load tests. The exact sequence is in [Club Cloudflare cutover](DEPLOYMENT_CUTOVER.md).
+The move is deliberately gated by a narrowly scoped deploy token, data migration, backup, monitoring and final-infrastructure load tests. R2 activation is deferred: no bucket means text-only papers, with image uploads and image-bearing imports rejected safely. Image-based assessments must remain on their existing deployment until private storage and image migration are approved. See [Free-tier operation](FREE_TIER.md) and [Club Cloudflare cutover](DEPLOYMENT_CUTOVER.md).
 
 ## Application layers
 
@@ -131,4 +131,3 @@ The in-process rate limiter is only a backstop. A large public event still needs
 D1 is intentionally the first database because the workload is small-row SQL and the project values low operational cost. The design reduces hot writes through checkpoint batching and post-test analytics jobs.
 
 The included 4,000-candidate rehearsal validates application logic and request shape on a local Worker+D1 emulator. It does not prove internet latency, regional behaviour or final-account quotas. Run staged tests at 200, 500, 1,000 and 4,000 candidates on the final infrastructure before claiming that capacity.
-

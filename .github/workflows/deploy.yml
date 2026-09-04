@@ -47,6 +47,9 @@ jobs:
       - name: Run release checks
         run: npm run check
 
+      - name: Verify free-tier and optional storage configuration
+        run: node scripts/verify_deployment_config.mjs
+
       - name: Render account-specific Wrangler configuration
         run: node scripts/render_wrangler_config.mjs
         env:
@@ -76,4 +79,3 @@ jobs:
           echo "- Environment: ${{ inputs.environment }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Commit: ${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Migrations: applied before code deployment" >> "$GITHUB_STEP_SUMMARY"
-

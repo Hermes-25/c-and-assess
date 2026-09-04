@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     FROM questions WHERE assessment_id = ? AND is_active = 1 ORDER BY position LIMIT 250`).bind(assessmentId).all();
   const latestImport = await env.DB.prepare(`SELECT id, source_filename, status, expected_rows, staged_rows, created_at, committed_at
     FROM question_imports WHERE assessment_id = ? ORDER BY created_at DESC LIMIT 1`).bind(assessmentId).first();
-  return Response.json({ assessment, questions: questions.results, latestImport });
+  return Response.json({ assessment, questions: questions.results, latestImport, imageStorageEnabled: Boolean(env.FILES) });
 }
 
 export async function POST(request: Request) {
@@ -41,6 +41,7 @@ export async function POST(request: Request) {
   if (body.action === 'start') {
     const expectedRows = Number(body.expectedRows);
     const imageNames = Array.isArray(body.imageNames) ? [...new Set(body.imageNames.map((name) => name.trim()).filter(Boolean))] : [];
+    if (imageNames.length && !env.FILES) return Response.json({ error: 'Image storage is not enabled on this deployment. Leave the CSV Image column blank for a text-only paper. R2 can be enabled later.' }, { status: 503 });
     if (!Number.isInteger(expectedRows) || expectedRows < 1 || expectedRows > 1000 || !body.sourceFilename?.toLowerCase().endsWith('.csv')) {
       return Response.json({ error: 'Choose a CSV containing 1–1,000 question rows.' }, { status: 400 });
     }
@@ -74,6 +75,7 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid import chunk.' }, { status: 400 });
     }
     const validation = normalizeQuestionRows(rows, offset + 1);
+    if (!env.FILES && validation.normalized.some((row) => row.imageName)) return Response.json({ error: 'Image storage is not enabled. This paper contains image references and cannot be published as a text-only paper.' }, { status: 503 });
     const errors = validation.issues.filter((issue) => issue.level === 'error');
     if (errors.length) {
       await env.DB.prepare("UPDATE question_imports SET status = 'failed', error_json = ? WHERE id = ?").bind(JSON.stringify(validation.issues), body.importId).run();
@@ -105,6 +107,10 @@ export async function POST(request: Request) {
   }
 
   if (body.action === 'commit') {
+    if (!env.FILES) {
+      const imageRow = await env.DB.prepare('SELECT position FROM question_import_rows WHERE import_id = ? AND image_name IS NOT NULL LIMIT 1').bind(body.importId).first();
+      if (imageRow) return Response.json({ error: 'Image storage is not enabled. The current paper has not been replaced.' }, { status: 503 });
+    }
     const refreshed = await env.DB.prepare('SELECT expected_rows, staged_rows, image_manifest_json, uploaded_images_json FROM question_imports WHERE id = ?').bind(body.importId)
       .first<{ expected_rows:number; staged_rows:number; image_manifest_json:string; uploaded_images_json:string }>();
     if (!refreshed || refreshed.staged_rows !== refreshed.expected_rows) return Response.json({ error: `Only ${refreshed?.staged_rows || 0} of ${refreshed?.expected_rows || 0} rows were staged.` }, { status: 409 });

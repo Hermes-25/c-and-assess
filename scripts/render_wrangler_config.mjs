@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const required = ['CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_D1_DATABASE_ID', 'CLOUDFLARE_R2_BUCKET'];
+const required = ['CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_D1_DATABASE_ID'];
 const missing = required.filter((key) => !process.env[key]);
 if (missing.length) {
   throw new Error(`Missing deployment variables: ${missing.join(', ')}`);
@@ -28,15 +28,14 @@ const config = {
   d1_databases: [
     {
       binding: 'DB',
-      database_name: process.env.CLOUDFLARE_D1_DATABASE_NAME || 'caciitg-assess-production',
+      database_name: process.env.CLOUDFLARE_D1_DATABASE_NAME || (production ? 'caciitg-assess-production' : 'caciitg-assess-staging'),
       database_id: process.env.CLOUDFLARE_D1_DATABASE_ID,
       migrations_dir: '../../drizzle',
     },
   ],
-  r2_buckets: [{ binding: 'FILES', bucket_name: r2Bucket }],
-  ...(customDomain
-    ? { routes: [{ pattern: customDomain, custom_domain: true }] }
-    : {}),
+  // An omitted bucket deliberately enables text-only mode; never activate billing here.
+  r2_buckets: r2Bucket ? [{ binding: 'FILES', bucket_name: r2Bucket }] : [],
+  routes: customDomain ? [{ pattern: customDomain, custom_domain: true }] : [],
 };
 
 delete config.dev;
@@ -46,4 +45,3 @@ delete config.topLevelName;
 const outputPath = resolve('dist/server/wrangler.deploy.jsonc');
 writeFileSync(outputPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
 console.log(outputPath);
-

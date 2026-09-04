@@ -82,7 +82,7 @@ flowchart TB
     classDef process fill:#f7e9f3,stroke:#b53f8c,color:#321027;
 ```
 
-The current public release uses an OpenAI Sites-managed Cloudflare runtime, D1 binding and object-storage binding. The locked target is a club-owned Worker deployed from this repository by GitHub Actions, backed by club D1 and private R2. The live cutover remains gated by R2 activation, secrets, backup, monitoring and final-infrastructure rehearsal. See [Architecture](docs/ARCHITECTURE.md), [Deployment](docs/SETUP_AND_DEPLOYMENT.md) and the [cutover runbook](docs/DEPLOYMENT_CUTOVER.md).
+The current public release uses an OpenAI Sites-managed Cloudflare runtime, D1 binding and object-storage binding. The locked target is a club-owned Worker deployed from this repository by GitHub Actions, backed by club D1 and optional private R2. R2 billing is deferred: the club staging configuration supports text-only papers until storage is approved. The live cutover remains gated by secrets, data migration, backup, monitoring and final-infrastructure rehearsal. See [Free-tier operation](docs/FREE_TIER.md), [Architecture](docs/ARCHITECTURE.md), [Deployment](docs/SETUP_AND_DEPLOYMENT.md) and the [cutover runbook](docs/DEPLOYMENT_CUTOVER.md).
 
 ## What I engineered
 
@@ -186,4 +186,3 @@ The application code is available under the [MIT Licence](LICENSE). The C&A name
 Built by **Abhishek Das** for the **Consulting & Analytics Club, IIT Guwahati**.
 
 [LinkedIn](https://www.linkedin.com/in/abhishek-das-iitg/) · [Portfolio](https://das-abhishek.vercel.app/) · [Email](mailto:work.abhishekdas@gmail.com)
-

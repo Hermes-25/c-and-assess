@@ -23,6 +23,7 @@ export async function POST(request: Request) {
   }
   let imageKey: string|null = null;
   if (!remove && image) {
+    if (!env.FILES) return Response.json({ error:'Image storage is not enabled on this deployment. Text-only papers remain available; private R2 storage can be enabled later.' },{ status:503 });
     if (image.size > 2*1024*1024 || !['image/png','image/jpeg'].includes(image.type) || !/\.(png|jpe?g)$/i.test(image.name)) {
       return Response.json({ error:'Use a PNG or JPEG image no larger than 2 MB.' },{ status:400 });
     }

@@ -40,7 +40,7 @@ Generate AUTH_SECRET as a long random value. Use a different value for local, pr
 The application expects:
 
 - a D1-compatible binding named DB;
-- an object-storage binding named FILES.
+- an optional object-storage binding named FILES for question images. Without it, use text-only papers; image imports are rejected safely.
 
 Vinext and the Cloudflare Vite plugin provide the local Worker-style runtime. Start it with:
 
@@ -79,6 +79,7 @@ This is the locked target architecture. Follow [Club Cloudflare cutover](DEPLOYM
 
 1. Create a D1 database.
 2. Create an R2 bucket when the club accepts the billing/account requirement.
+   Until then, leave `CLOUDFLARE_R2_BUCKET` unset in the deployment workflow. See [Free-tier operation](FREE_TIER.md).
 3. Copy wrangler.example.jsonc to wrangler.production.jsonc.
 4. Replace account, database, bucket and domain placeholders.
 5. Add the three secrets through Wrangler or the Cloudflare dashboard.
@@ -121,4 +122,3 @@ This is simpler and safer than mounting a full server application below a GitHub
 - Use HTTPS only in production.
 - Set edge rate limits before opening a broad public registration.
 - Freeze code, DNS, OAuth and schema changes before test day.
-
